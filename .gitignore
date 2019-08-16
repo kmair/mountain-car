@@ -1,0 +1,8 @@
+# Folders for other programming languages
+cpp/
+java/
+lib/
+octave/
+
+# Images of output results
+*.PNG
