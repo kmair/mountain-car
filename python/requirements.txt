@@ -1,0 +1,4 @@
+imutils==0.5.4
+numpy==1.19.1
+pyglet==1.5.14
+six==1.15.0
