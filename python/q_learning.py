@@ -13,7 +13,7 @@ import sys
 def weight(state, w, b):     # state is the dictionary here
     sTw = np.zeros(3)
 
-    for i in range(AS):
+    for i in range(act_set):
         for j in state.keys():
             sTw[i] += w[j][i] * state[j]
     return sTw + b
@@ -28,7 +28,7 @@ def Action_select(q_vals, epsilon):
     return a
     
 def Q_train(alpha, gamma, epsilon, max_iterations):
-    w = np.zeros((SS,AS))       # Initialize
+    w = np.zeros((SS,act_set))       # Initialize
     b = 0                       # Initialize
     Rewards = []
     
@@ -40,7 +40,6 @@ def Q_train(alpha, gamma, epsilon, max_iterations):
         for m in range(max_iterations):
             if done == True:
                 break
-                #state = Car.reset()
             
             q_vals = weight(state, w, b)
             a = Action_select(q_vals, epsilon)
@@ -56,7 +55,7 @@ def Q_train(alpha, gamma, epsilon, max_iterations):
             for j in state.keys():
                 w[j][a] = w[j][a] - grad * state[j]
             
-            b = b - grad * 1
+            b = b - grad
             state = Sprime
             r += reward
             
@@ -85,7 +84,7 @@ alpha = float(sys.argv[8])
 
 Car = MountainCar(mode)
 SS = Car.state_space
-AS = 3    # Action space has 3 options: (Left, No Action, Right)
+act_set = 3    # Action space has 3 options: (Left, No Action, Right)
 
 W, B, Rewards = Q_train(alpha, gamma, epsilon, max_iter)
 
@@ -94,7 +93,7 @@ W, B, Rewards = Q_train(alpha, gamma, epsilon, max_iter)
 with open(weight_out, 'w+') as wt_file:
     wt_file.write('%s' %(B) + '\n')
     for j in range(SS):
-        for i in range(AS):
+        for i in range(act_set):
             wt_file.write('%s' %(W[j,i]) + '\n')
 
 # Return files
